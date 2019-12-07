@@ -29,6 +29,12 @@ class RecipesController extends Controller
         return view('recipes.create');
     }
 
+    /**
+     * Store a newly created recipe in storage
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $recipe = new Recipe([
@@ -66,9 +72,24 @@ class RecipesController extends Controller
         return view('recipes.edit', ['recipe' => $recipe]);
     }
 
-    public function update(Request $request)
+    /**
+     * Update the specified recipe in storage
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Recipe $recipe
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Recipe $recipe)
     {
+        $recipe->update([
+            'name' => $request->get('name'),
+            'ingredients' => $request->get('ingredients'),
+            'description' => $request->get('description'),
+            'winter' => (bool) $request->get('winter'),
+            'big' => (bool) $request->get('big'),
+        ]);
 
+        return redirect()->route('recipes.show', $recipe);
     }
 
     /**

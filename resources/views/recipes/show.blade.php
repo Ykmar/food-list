@@ -6,7 +6,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3>{{ $recipe->name }}</h3>
+                        <h3>{{ $recipe->name }}
+                            <a class="btn btn-primary float-right" href="{{ route('recipes.edit', $recipe) }}">Editer</a>
+                        </h3>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Ingredients</h5>
@@ -25,6 +27,11 @@
                         @else
                             <p class="card-text">Non</p>
                         @endif
+                        <form action="{{ route('recipes.destroy', $recipe) }}" method="post">
+                            {{ method_field('delete') }}
+                            @csrf
+                            <button class="btn btn-danger">supprimer</button>
+                        </form>
                     </div>
                 </div>
             </div>
