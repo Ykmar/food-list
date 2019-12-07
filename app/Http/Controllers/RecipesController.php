@@ -4,9 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use App\Services\Message\MessageService;
 
 class RecipesController extends Controller
 {
+    /**
+     * @var \App\Services\Message\MessageService
+     */
+    protected $messageService;
+
+    /**
+     * RecipesController constructor.
+     *
+     * @param \App\Services\Message\MessageService $messageService
+     */
+    public function __construct(MessageService $messageService)
+    {
+        $this->messageService = $messageService;
+    }
+
     /**
      * Display the recipes list
      *
@@ -47,6 +63,7 @@ class RecipesController extends Controller
 
         $recipe->save();
 
+        $this->messageService->set('success', 'La recette a bien été enregistrée');
         return redirect()->route('recipes.show', $recipe);
     }
 
@@ -89,6 +106,7 @@ class RecipesController extends Controller
             'big' => (bool) $request->get('big'),
         ]);
 
+        $this->messageService->set('success', 'La recette a bien été modifiée');
         return redirect()->route('recipes.show', $recipe);
     }
 
@@ -103,6 +121,7 @@ class RecipesController extends Controller
     {
         $recipe->delete();
 
+        $this->messageService->set('success', 'La recette a bien été supprimée');
         return redirect()->route('recipes.index');
     }
 }
