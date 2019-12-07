@@ -12,3 +12,4 @@
 */
 
 Auth::routes();
+
