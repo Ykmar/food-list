@@ -13,7 +13,7 @@
                         <div class="card mb-2">
                             <div class="card-body">
                                 <div class="row align-items-center">
-                                    <div class="col-md-4">
+                                    <div class="col-md-8">
                                         <h5 class="card-title">
                                             {{ $recipe->name }}
                                             (<a href="{{ route('recipes.show', $recipe) }}">voir</a>)

@@ -16,7 +16,7 @@ class RecipesController extends Controller
     {
         $recipes = Recipe::all();
 
-        return view('recipes.index', compact('recipes'));
+        return view('recipes.index', ['recipes' => $recipes]);
     }
 
     /**
@@ -31,7 +31,17 @@ class RecipesController extends Controller
 
     public function store(Request $request)
     {
+        $recipe = new Recipe([
+            'name' => $request->get('name'),
+            'ingredients' => $request->get('ingredients'),
+            'description' => $request->get('description'),
+            'winter' => (bool) $request->get('winter'),
+            'big' => (bool) $request->get('big'),
+        ]);
 
+        $recipe->save();
+
+        return redirect()->route('recipes.show', $recipe);
     }
 
     /**
@@ -42,7 +52,7 @@ class RecipesController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return view('recipes.show', compact($recipe));
+        return view('recipes.show', ['recipe' => $recipe]);
     }
 
     /**
@@ -53,7 +63,7 @@ class RecipesController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        return view('recipes.edit', compact($recipe));
+        return view('recipes.edit', ['recipe' => $recipe]);
     }
 
     public function update(Request $request)
