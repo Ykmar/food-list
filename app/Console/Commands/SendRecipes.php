@@ -40,5 +40,6 @@ class SendRecipes extends Command
     public function handle(RecipeService $recipeService)
     {
         $recipes = $recipeService->getAvailableRecipes();
+        dd($recipes);
     }
 }

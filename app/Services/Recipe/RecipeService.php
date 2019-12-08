@@ -7,6 +7,11 @@ use App\Models\Recipe;
 
 class RecipeService
 {
+    /**
+     * Retourne 5 recettes en fonction de la période de l'année
+     *
+     * @return \App\Models\Recipe[]|\Illuminate\Database\Eloquent\Collection|mixed
+     */
     public function getAvailableRecipes()
     {
         $today = Carbon::now();
@@ -17,14 +22,30 @@ class RecipeService
             case $today->between(Carbon::createFromFormat('dd-mm', '01-06'), Carbon::createFromFormat('dd-mm', '01-09')):
                 return $this->getRecipesBySeason('summer');
             default:
-
+                return $this->getRecipes();
         }
+    }
+
+    /**
+     * Retourne une liste de recettes
+     *
+     * @return \App\Models\Recipe[]|\Illuminate\Database\Eloquent\Collection|mixed
+     */
+    protected function getRecipes()
+    {
+        $bigOnes = $this->getBigRecipes();
+
+        $recipes = Recipe::all()->random(3);
+
+        $recipes->merge($bigOnes);
+
+        return $recipes;
     }
 
     /**
      * Return recipes by season
      *
-     * @param string $season
+     * @param $season
      * @return mixed
      */
     protected function getRecipesBySeason($season)
@@ -41,13 +62,17 @@ class RecipeService
     /**
      * Retourne la liste des grosses recettes
      *
-     * @param string $season
+     * @param string|null $season
      * @return mixed
      */
     protected function getBigRecipes($season = null)
     {
-        return Recipe::where('season', $season)
-            ->where('big', true)
-            ->random(2);
+        if ($season) {
+            return Recipe::where('big', true)
+                ->where('season', $season)
+                ->random(2);
+        }
+
+        return Recipe::where('big', true)->random(2);
     }
 }
