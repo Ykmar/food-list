@@ -17,9 +17,9 @@ class RecipeService
         $today = Carbon::now();
 
         switch ($today) {
-            case $today->between(Carbon::createFromFormat('dd-mm', '01-10'), Carbon::createFromFormat('dd-mm', '01-03')):
+            case $today->between(Carbon::create(null, 10, 1), Carbon::create(date('Y') + 1, 3, 1)):
                 return $this->getRecipesBySeason('winter');
-            case $today->between(Carbon::createFromFormat('dd-mm', '01-06'), Carbon::createFromFormat('dd-mm', '01-09')):
+            case $today->between(Carbon::create(null, 6, 1), Carbon::create(null, 9, 1)):
                 return $this->getRecipesBySeason('summer');
             default:
                 return $this->getRecipes();
@@ -35,9 +35,11 @@ class RecipeService
     {
         $bigOnes = $this->getBigRecipes();
 
-        $recipes = Recipe::all()->random(3);
+        $recipes = Recipe::where('big', false)->get()->random(3);
 
-        $recipes->merge($bigOnes);
+        foreach ($bigOnes as $one) {
+            $recipes->push($one);
+        }
 
         return $recipes;
     }
@@ -52,9 +54,14 @@ class RecipeService
     {
         $bigOnes = $this->getBigRecipes($season);
 
-        $recipes = Recipe::where('season', $season)->random(3);
+        $recipes = Recipe::where('season', $season)
+            ->where('big', false)
+            ->get()
+            ->random(3);
 
-        $recipes->merge($bigOnes);
+        foreach ($bigOnes as $one) {
+            $recipes->push($one);
+        }
 
         return $recipes;
     }
@@ -67,12 +74,12 @@ class RecipeService
      */
     protected function getBigRecipes($season = null)
     {
+        $recipe = Recipe::where('big', true);
+
         if ($season) {
-            return Recipe::where('big', true)
-                ->where('season', $season)
-                ->random(2);
+           $recipe->where('season', $season);
         }
 
-        return Recipe::where('big', true)->random(2);
+        return $recipe->get()->random(2);
     }
 }
