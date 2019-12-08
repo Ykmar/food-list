@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Recipe\RecipeService;
+use App\Mail\RecipeMail;
 use Illuminate\Console\Command;
+use App\Services\Recipe\RecipeService;
+use Illuminate\Support\Facades\Mail;
 
 class SendRecipes extends Command
 {
@@ -40,5 +42,12 @@ class SendRecipes extends Command
     public function handle(RecipeService $recipeService)
     {
         $recipes = $recipeService->getAvailableRecipes();
+
+        $message = new RecipeMail();
+        $message->from(config('mail.from'));
+        $message->subject('Liste de repas de la semaine');
+        $message->with(['recipes' => $recipes]);
+
+        Mail::to(config('mail.recipients'));
     }
 }
