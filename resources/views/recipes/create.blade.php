@@ -31,15 +31,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Plat d'hiver ?</label>
+                            <label class="col-sm-2 col-form-label">Saison</label>
                             <div class="col-sm-10">
                                 <div class="form-check">
-                                    <input class="form-check-input" id="winterTrue" type="radio" name="winter" value="true" checked>
-                                    <label class="form-check-label" for="winterTrue">Oui</label>
+                                    <input class="form-check-input" id="winter" type="radio" name="season" value="winter" checked>
+                                    <label class="form-check-label" for="winter">Hiver</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" id="winterFalse" type="radio" name="winter" value="false">
-                                    <label class="form-check-label" for="winterFalse">Non</label>
+                                    <input class="form-check-input" id="summer" type="radio" name="season" value="summer">
+                                    <label class="form-check-label" for="summer">Eté</label>
                                 </div>
                             </div>
                         </div>

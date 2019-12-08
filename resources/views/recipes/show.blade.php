@@ -15,11 +15,11 @@
                         <p class="card-text">{!! nl2br($recipe->ingredients) !!}</p>
                         <h5 class="card-title">Recette</h5>
                         <p class="card-text">{{ $recipe->description }}</p>
-                        <h5 class="card-title">Plat d'hiver ?</h5>
-                        @if($recipe->winter)
-                            <p class="card-text">Oui</p>
+                        <h5 class="card-title">Saison</h5>
+                        @if($recipe->season === 'winter')
+                            <p class="card-text">Hiver</p>
                         @else
-                            <p class="card-text">Non</p>
+                            <p class="card-text">Eté</p>
                         @endif
                         <h5 class="card-title">Plat pour plusieurs jours ?</h5>
                         @if($recipe->big)

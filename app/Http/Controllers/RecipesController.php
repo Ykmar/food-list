@@ -57,7 +57,7 @@ class RecipesController extends Controller
             'name' => $request->get('name'),
             'ingredients' => $request->get('ingredients'),
             'description' => $request->get('description'),
-            'winter' => (bool) $request->get('winter'),
+            'season' => $request->get('season'),
             'big' => (bool) $request->get('big'),
         ]);
 
@@ -102,7 +102,7 @@ class RecipesController extends Controller
             'name' => $request->get('name'),
             'ingredients' => $request->get('ingredients'),
             'description' => $request->get('description'),
-            'winter' => (bool) $request->get('winter'),
+            'season' => $request->get('season'),
             'big' => (bool) $request->get('big'),
         ]);
 

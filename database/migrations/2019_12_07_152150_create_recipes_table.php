@@ -18,7 +18,7 @@ class CreateRecipesTable extends Migration
             $table->string('name');
             $table->text('ingredients');
             $table->text('description');
-            $table->boolean('winter');
+            $table->string('season');
             $table->boolean('big');
             $table->timestamps();
         });
