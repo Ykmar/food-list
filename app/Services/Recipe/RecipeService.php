@@ -43,7 +43,7 @@ class RecipeService
     }
 
     /**
-     * Return recipes by season
+     * Retourne une liste de recettes en fonction de la saison
      *
      * @param $season
      * @return mixed
