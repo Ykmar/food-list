@@ -22,6 +22,6 @@ $factory->define(Recipe::class, function (Faker $faker) {
         'ingredients' => $faker->text(),
         'description' => $faker->text(),
         'season' => 'winter',
-        'big' => $faker->boolean,
+        'big' => false,
     ];
 });

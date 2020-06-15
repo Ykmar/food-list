@@ -15,7 +15,7 @@ class RecipeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(RecipeService::class, function ($app) {
-            return new RecipeService();
+            return new RecipeService($app['config']);
         });
     }
 }

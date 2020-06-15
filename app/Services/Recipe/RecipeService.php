@@ -4,9 +4,26 @@ namespace App\Services\Recipe;
 
 use Carbon\Carbon;
 use App\Models\Recipe;
+use Illuminate\Config\Repository;
+use App\Exceptions\SeasonNotFoundException;
 
 class RecipeService
 {
+    /**
+     * @var \Illuminate\Config\Repository
+     */
+    protected $config;
+
+    /**
+     * RecipeService constructor.
+     *
+     * @param \Illuminate\Config\Repository $config
+     */
+    public function __construct(Repository $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * Retourne 5 recettes en fonction de la période de l'année
      *
@@ -17,31 +34,13 @@ class RecipeService
         $today = Carbon::now();
 
         switch ($today) {
-            case $today->between(Carbon::create(null, 10, 1), Carbon::create(date('Y') + 1, 3, 1)):
+            case $today->between(Carbon::create(date('Y'), 10, 1), Carbon::create(date('Y') + 1, 3, 1)):
                 return $this->getRecipesBySeason('winter');
-            case $today->between(Carbon::create(null, 6, 1), Carbon::create(null, 9, 1)):
+            case $today->between(Carbon::create(date('Y'), 6, 1), Carbon::create(date('Y'), 9, 1)):
                 return $this->getRecipesBySeason('summer');
             default:
-                return $this->getRecipes();
+                throw new SeasonNotFoundException('Season not found');
         }
-    }
-
-    /**
-     * Retourne une liste de recettes
-     *
-     * @return \App\Models\Recipe[]|\Illuminate\Database\Eloquent\Collection|mixed
-     */
-    protected function getRecipes()
-    {
-        $bigOnes = $this->getBigRecipes();
-
-        $recipes = Recipe::where('big', false)->get()->random(3);
-
-        foreach ($bigOnes as $one) {
-            $recipes->push($one);
-        }
-
-        return $recipes;
     }
 
     /**
@@ -54,10 +53,11 @@ class RecipeService
     {
         $bigOnes = $this->getBigRecipes($season);
 
+        $wanted = $this->config->get('recipes.simple.wanted');
         $recipes = Recipe::where('season', $season)
             ->where('big', false)
             ->get()
-            ->random(3);
+            ->random($wanted);
 
         foreach ($bigOnes as $one) {
             $recipes->push($one);
@@ -75,11 +75,12 @@ class RecipeService
     protected function getBigRecipes($season = null)
     {
         $recipe = Recipe::where('big', true);
+        $wanted = $this->config->get('recipes.big.wanted');
 
         if ($season) {
            $recipe->where('season', $season);
         }
 
-        return $recipe->get()->random(2);
+        return $recipe->get()->random($wanted);
     }
 }

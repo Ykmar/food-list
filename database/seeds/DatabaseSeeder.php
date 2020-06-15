@@ -11,9 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Recipe::class, 3)->create([
-            'big' => false,
-        ]);
+        factory(\App\Models\Recipe::class, 3)->create();
 
         factory(\App\Models\Recipe::class, 2)->create([
             'big' => true,
@@ -21,7 +19,6 @@ class DatabaseSeeder extends Seeder
 
         factory(\App\Models\Recipe::class, 3)->create([
             'season' => 'summer',
-            'big' => false,
         ]);
 
         factory(\App\Models\Recipe::class, 2)->create([
